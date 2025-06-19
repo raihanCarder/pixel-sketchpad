@@ -82,11 +82,14 @@ function randomColor() {
 gridContainer.addEventListener("mouseenter", (e) => {
     if (!e.target.classList.contains("box")) return; // Early check so doesnt alter parent.
     if (randomColorSelector) {
+        e.target.opacity = undefined;
         e.target.style.background = randomColor();
     } else if (customColorSelector) {
+        e.target.opacity = undefined;
         e.target.style.background = customColor();
     }
     else if (shaderSelector) {
+
         e.target.style.background = shaderColor(e);
     }
 
