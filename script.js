@@ -10,11 +10,14 @@ const shaderBtn = document.getElementById("shader");
 let allBoxes;
 let boxes;
 
+// Intialization 
+createGrid(16);
+
+// Btn Pressed Varaibles
+
 let randomColorSelector = false;
 let customColorSelector = false;
 let shaderSelector = false;
-
-createGrid(16); // Starting grid size
 
 // Update Grid Section
 
@@ -43,7 +46,7 @@ function createGrid(size) {
     updateBoxAmount();
 }
 
-gridBtn.addEventListener("click", () => {
+function validGridSize() {
     const gridSize = Number(inputText.value);
     const regex = /\./g;
 
@@ -59,8 +62,7 @@ gridBtn.addEventListener("click", () => {
         createGrid(gridSize);
         gridSizeText.textContent = `${gridSize} X ${gridSize}`
     }
-
-});
+}
 
 // Random Color Btn Section
 
@@ -76,12 +78,16 @@ function randomColor() {
 
 // Notes for future use : This makes it so everything inside this container
 // will call this if mouse touches any child. 
+
 gridContainer.addEventListener("mouseenter", (e) => {
     if (!e.target.classList.contains("box")) return; // Early check so doesnt alter parent.
     if (randomColorSelector) {
         e.target.style.background = randomColor();
     } else if (customColorSelector) {
         e.target.style.background = customColor();
+    }
+    else if (shaderSelector) {
+        e.target.style.background = shaderColor(e);
     }
 
 }, true);
@@ -96,7 +102,7 @@ function falsifySelectors() {
 
 function resetBoard() {
     boxes.forEach((el) => {
-        el.style.background = "white";
+        el.style.background = "rgba(255,255,255,1)";
     })
     return;
 }
@@ -104,55 +110,64 @@ function resetBoard() {
 // Custom Color Section
 
 function customColor() {
+    console.log(inputColor.value);
     return inputColor.value;
 }
 
 // Shader Section 
 
-function editOpacity() {
-
-    if (shaderSelector) {
-        boxes.forEach((el) => {
-            el.style.opacity = "0.1";
-        });
-    } else if (boxes[0].style.opacity === "1") {
-        return;
-    }
-    else {
-        boxes.forEach((el) => {
-            el.style.opacity = "1";
-        });
-    }
-}
-
-function changeOpacity(box) {
-    const opacity = Number(box.style.opacity);
-    if (opacity < 1) {
-        return ((opacity * 100) + 10) / 100;
-    }
+function shaderColor(e) {
+    const el = e.target;
+    el.opacity = Math.min((el.opacity || 0.1) + 0.1, 1);
+    el.style.background = `rgba(0, 0, 0, ${el.opacity})`;
     return;
 }
 
-// Finds Btn Clicked
 
-function getClickedBtn(e) {
+// Finds Btn Clicked and Highlights Selected Btn
+
+function getClickedBtn(id) {
     falsifySelectors();
-    if (randomColorBtn.id === e.currentTarget.id) {
+
+    if (randomColorBtn.id === id) {
         randomColorSelector = true;
     }
-    else if (customColorBtn.id === e.currentTarget.id) {
+    else if (customColorBtn.id === id) {
         customColorSelector = true;
     }
-    console.log(e.currentTarget.id);
-    console.log(shaderBtn.id);
+    else if (shaderBtn.id === id) {
+        shaderSelector = true;
+    }
+
+    highlightBtn();
+}
+
+function highlightBtn() {
+
+    // Reset Btn Colors 
+
+    randomColorBtn.style.background = "#FCD34D";
+    customColorBtn.style.background = "#FCD34D";
+    shaderBtn.style.background = "#FCD34D";
+
+    // Highlights Selected
+
+    if (randomColorSelector) {
+        randomColorBtn.style.background = "yellow";
+    }
+    else if (customColorSelector) {
+        customColorBtn.style.background = "yellow";
+    }
+    else if (shaderSelector) {
+        shaderBtn.style.background = "yellow";
+    }
 }
 
 
 // Event Listeners 
 
-shaderBtn.addEventListener("click", (e) => getClickedBtn(e));
-customColorBtn.addEventListener("click", (e) => getClickedBtn(e));
+gridBtn.addEventListener("click", validGridSize);
+shaderBtn.addEventListener("click", (e) => getClickedBtn(e.currentTarget.id));
+customColorBtn.addEventListener("click", (e) => getClickedBtn(e.currentTarget.id));
 resetBtn.addEventListener("click", resetBoard);
-randomColorBtn.addEventListener("click", (e) => getClickedBtn(e));
-
-
+randomColorBtn.addEventListener("click", (e) => getClickedBtn(e.currentTarget.id));

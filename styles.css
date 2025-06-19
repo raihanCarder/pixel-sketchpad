@@ -7,8 +7,9 @@
 }
 
 :root {
-    --background-color: gray;
-    --controls-color: red;
+    --background-color: #F9FAFB;
+    --controls-color: #3B82F6;
+    --button-color: #FCD34D;
 }
 
 body {
@@ -20,13 +21,17 @@ body {
     background-color: var(--background-color);
 }
 
+h1 {
+    font-size: 40px;
+}
+
 #main-title {
     text-align: center;
 }
 
 #controls-title {
     text-align: center;
-    font-size: 22px;
+    font-size: 40px;
     font-weight: bold;
 }
 
@@ -36,6 +41,9 @@ body {
     align-items: flex-start;
     justify-content: center;
     border-top: 1px solid black;
+    box-shadow:
+        0 0 15px rgba(0, 0, 0, 0.25),
+        0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 .controls {
@@ -49,6 +57,7 @@ body {
     border-left: 2px solid black;
     border-bottom: 2px solid black;
     background-color: var(--controls-color);
+    gap: 20px;
 }
 
 .grid-container {
@@ -59,25 +68,73 @@ body {
     height: 700px;
 }
 
+#grid-sizing>p {
+    font-size: 20px;
+}
+
+#grid-input {
+    padding: 7px;
+    width: 100%;
+}
+
 #grid-sizing {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 5px;
+    text-align: center;
+    margin-bottom: 220px;
 }
 
-#current-grid-size {
+#grid-sizing>#current-grid-size {
     font-weight: bold;
     text-align: center;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 #grid-input {
     text-align: center;
+    font-size: 18px;
+    padding: 0;
+    border-radius: 10px;
+
+}
+
+button {
+    font-size: 18px;
+    width: 200px;
+    padding: 5px;
+    font-weight: bold;
+    background-color: var(--button-color);
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+#custom-color {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background-color: var(--button-color);
 }
 
 .box {
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     opacity: 1;
+}
+
+#color-picker {
+    background-color: inherit;
+    border: none;
+    border-radius: 10px;
+}
+
+#reset {
+    background-color: #F9A8D4;
 }
